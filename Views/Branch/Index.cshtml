@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "Branch Page";
+    var branches = ViewBag.branches as List<mysqlefcore.Branch>;
+}
+
+<link href="~/lib/DataTables-1.13.5/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<a type="button" class="btn btn-success mb-3" asp-area="" asp-controller="Branch" asp-action="AddBranchPage">Add New</a>
+
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th class="th-sm">Branch Code
+      </th>
+      <th class="th-sm">Branch Name
+      </th>
+      <th class="th-sm">Branch Manager
+      </th>
+      <th class="th-sm">Date Opened
+      </th>
+      <th class="th-sm">Action
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    @if(branches != null && branches.Count > 0){
+        @foreach (var branch in branches)
+        {
+            <tr>
+                <td>@branch.branchCode</td>
+                <td>@branch.branchName</td>
+                <td>@branch.branchManager</td>
+                <td>@branch.dateOpened</td>
+                <td>
+                    <div class="d-flex flex-row">
+                        <form asp-area="" asp-controller="Branch" asp-action="EditBranchPage" class=" pe-3">
+                            <input type="hidden" name="branchCode" value="@branch.branchCode">
+                            <button type="submit" class="btn btn-dark" >Edit</button>
+                        </form >
+                        <form asp-area="" asp-controller="Branch" asp-action="DeleteBranch" method="post">
+                            <input type="hidden" name="branchCode" value="@branch.branchCode">
+                            <button type="submit" class="btn btn-warning">Delete</button>
+                        </form >
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Branch Code
+      </th>
+      <th>Branch Name
+      </th>
+      <th>Branch Manager
+      </th>
+      <th>Date Opened
+      </th>
+      <th>Action
+      </th>
+    </tr>
+  </tfoot>
+</table>
+
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        //alert("inside document ready");
+        try {
+            $('#dtBasicExample').dataTable({});
+        } catch (err) {
+            alert(err + ":\n Datatables installed?  Included in Resource bundle?");
+        }
+    });
+</script>
